@@ -112,6 +112,12 @@ realm/client. The client id must stay `opentaberna-admin-ui`: the API checks the
 token's `azp` against its list of admin clients, and any other client's token is
 refused on `/v1/admin/**`.
 
+### Error reporting
+
+OwnRing opts in to the inherited batched error reporter in both environment files. Set `FRONTEND_ERRORS_ENABLED=true` on the API too, then rebuild this frontend. Global browser errors, unhandled promise rejections and Angular errors are reported to `/api/v1/telemetry/errors`; the Errors page reads the grouped records from the API. Reporting failures never replace the original error or interrupt the UI.
+
+The current `angular.json` has no environment file replacements: even its production build uses `environment.ts`, keeping the local Keycloak URL. `environment.prod.ts` is a deployment template, not the active local configuration. Do not change only that template expecting the container to change. Error messages/stacks may contain sensitive data; collection is enabled for the local stack, not an assertion that public deployment meets privacy requirements.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
